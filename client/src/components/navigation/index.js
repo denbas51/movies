@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useContext, useCallback } from "react"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Toolbar from "@mui/material/Toolbar"
@@ -16,9 +16,20 @@ import SettingsIcon from "@mui/icons-material/Settings"
 import { Button } from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
 import { Link } from "@mui/material"
+import { AppContext } from "../../context/appContext"
+import { LOCALES } from "../../const"
 
 const Navigation = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false)
+  const { state, dispatch } = useContext(AppContext)
+
+  const setLanguage = useCallback((locale) => {
+    dispatch({
+      type: "setLocale",
+      locale,
+    })
+  }, [])
+
   const list = () => (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
@@ -61,6 +72,23 @@ const Navigation = () => {
             </Typography>
           </Link>
 
+          <Box>
+            <Button
+              sx={{ my: 2, color: "white" }}
+              disabled={state.locale === LOCALES.ENGLISH}
+              onClick={() => setLanguage(LOCALES.ENGLISH)}
+            >
+              En
+            </Button>
+            <Button
+              sx={{ my: 2, color: "white" }}
+              disabled={state.locale === LOCALES.UKRAINIAN}
+              onClick={() => setLanguage(LOCALES.UKRAINIAN)}
+            >
+              Укр
+            </Button>
+          </Box>
+
           <Box sx={{ display: { xs: "none", lg: "flex" } }}>
             <Button
               component={RouterLink}
@@ -70,6 +98,9 @@ const Navigation = () => {
               Settings
             </Button>
           </Box>
+          <Button component={RouterLink} to="login" color="inherit">
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
 
