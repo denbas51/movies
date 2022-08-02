@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { FormattedMessage, useIntl } from "react-intl"
 
 function Copyright(props) {
   return (
@@ -23,7 +24,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        <FormattedMessage id="website" />
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -34,6 +35,7 @@ function Copyright(props) {
 const theme = createTheme()
 
 export default function SignIn() {
+  const intl = useIntl()
   const handleSubmit = (event) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -59,7 +61,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            <FormattedMessage id="signIn" />
           </Typography>
           <Box
             component="form"
@@ -72,7 +74,7 @@ export default function SignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label={intl.messages.email}
               name="email"
               autoComplete="email"
               autoFocus
@@ -82,14 +84,14 @@ export default function SignIn() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label={intl.messages.password}
               type="password"
               id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label={intl.messages.rememberMe}
             />
             <Button
               type="submit"
@@ -97,17 +99,17 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              <FormattedMessage id="signIn" />
             </Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  <FormattedMessage id="forgotPass" />
                 </Link>
               </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  <FormattedMessage id="signUp" />
                 </Link>
               </Grid>
             </Grid>

@@ -4,7 +4,6 @@ import Grid from "@mui/material/Grid"
 import { useQuery } from "@apollo/client"
 import { MOVIE_BY_IDS_QUERY } from "./queries"
 import { MovieCard } from "../../components"
-import Skeleton from "@mui/material/Skeleton"
 
 const Recommend = () => {
   const [searchParams] = useSearchParams()

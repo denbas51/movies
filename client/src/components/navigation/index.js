@@ -18,10 +18,12 @@ import { Link as RouterLink } from "react-router-dom"
 import { Link } from "@mui/material"
 import { AppContext } from "../../context/appContext"
 import { LOCALES } from "../../const"
+import { FormattedMessage, useIntl } from "react-intl"
 
 const Navigation = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false)
   const { state, dispatch } = useContext(AppContext)
+  const intl = useIntl()
 
   const setLanguage = useCallback((locale) => {
     dispatch({
@@ -39,7 +41,7 @@ const Navigation = () => {
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
-              <ListItemText primary={"Settings"} />
+              <ListItemText primary={intl.messages.settings} />
             </ListItemButton>
           </ListItem>
         </Link>
@@ -68,7 +70,7 @@ const Navigation = () => {
               component="div"
               sx={{ color: "white", flexGrow: 1 }}
             >
-              Movies recommendation
+              <FormattedMessage id="recommendations" />
             </Typography>
           </Link>
 
@@ -95,11 +97,11 @@ const Navigation = () => {
               to="settings"
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              Settings
+              <FormattedMessage id="settings" />
             </Button>
           </Box>
           <Button component={RouterLink} to="login" color="inherit">
-            Login
+            <FormattedMessage id="login" />
           </Button>
         </Toolbar>
       </AppBar>

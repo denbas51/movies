@@ -7,6 +7,7 @@ import { MOVIES_QUERY } from "./queries"
 import Pagination from "@mui/material/Pagination"
 import { useState } from "react"
 import { useMovies } from "../../hooks/useMovies"
+import { FormattedMessage } from "react-intl"
 
 const Home = () => {
   const [page, setPage] = useState(1)
@@ -27,7 +28,9 @@ const Home = () => {
     <Box sx={{ flexGrow: 1, marginTop: 2 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Paper>Filters sections</Paper>
+          <Paper>
+            <FormattedMessage id="section" />
+          </Paper>
         </Grid>
         <Grid item xs={12} md={8}>
           <Paper>

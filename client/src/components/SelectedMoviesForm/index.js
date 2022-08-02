@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton"
 import CheckIcon from "@mui/icons-material/Check"
 import { Form, Field } from "react-final-form"
 
-const SelectedMoviesForm = ({ onSubmit }) => (
+const SelectedMoviesForm = ({ onSubmit, intl }) => (
   <Form
     onSubmit={onSubmit}
     validate={(values) => {
@@ -27,7 +27,7 @@ const SelectedMoviesForm = ({ onSubmit }) => (
               <>
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
-                  placeholder="Put the list name"
+                  placeholder={intl.messages.listName}
                   inputProps={{ "aria-label": "put list name" }}
                   {...input}
                 />

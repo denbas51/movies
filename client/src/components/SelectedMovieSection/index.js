@@ -10,6 +10,7 @@ import {
 } from "../../components"
 import noMoviesImageSrc from "../../assets/no_movies.png"
 import { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 
 const SelectedMovies = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -39,6 +40,8 @@ const NoMovies = styled(Box)(({ theme }) => ({
 const SelectedMoviesSection = ({ selectedMovies, deleteMovie }) => {
   const [listName, setListName] = useState("")
   const [link, setLink] = useState("")
+  const intl = useIntl()
+
   const onSubmit = ({ listName }) => {
     const ids = selectedMovies.map(({ id }) => id)
     const link = `${
@@ -65,7 +68,7 @@ const SelectedMoviesSection = ({ selectedMovies, deleteMovie }) => {
             src={noMoviesImageSrc}
           />
           <Typography variant="h5" mt={2}>
-            No selected movies
+            <FormattedMessage id="noMovies" />
           </Typography>
         </NoMovies>
       </SelectedMovies>
@@ -84,7 +87,7 @@ const SelectedMoviesSection = ({ selectedMovies, deleteMovie }) => {
         ))}
       </MoviesList>
       <Box pt={2}>
-        <SelectedMoviesForm onSubmit={onSubmit} />
+        <SelectedMoviesForm onSubmit={onSubmit} intl={intl} />
       </Box>
       <ConfirmModal
         url={link}

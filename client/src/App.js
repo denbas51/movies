@@ -2,8 +2,7 @@ import { useContext } from "react"
 import CssBaseline from "@mui/material/CssBaseline"
 import { Navigation } from "./components"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Home, Settings, Recommend } from "./pages"
-import SignIn from "./pages/Login"
+import { Home, Settings, Recommend, SignIn } from "./pages"
 import { Box, Container } from "@mui/material"
 import {
   ApolloClient,
@@ -15,6 +14,9 @@ import {
 } from "@apollo/client"
 import { HOST_URL } from "./config"
 import { AppContext } from "./context/appContext"
+import { IntlProvider } from "react-intl"
+import { messages } from "./i18n/messages/messages"
+import { LOCALES } from "./const"
 
 function App() {
   const { state } = useContext(AppContext)
@@ -39,26 +41,36 @@ function App() {
     cache: new InMemoryCache(),
   })
   return (
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <CssBaseline />
-        <Navigation />
-        <Box
-          sx={{
-            backgroundColor: (theme) => theme.palette.grey[100],
-          }}
-        >
-          <Container maxWidth="xl">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="recommend" element={<Recommend />} />
-              <Route path="login" element={<SignIn />} />
-            </Routes>
-          </Container>
-        </Box>
-      </BrowserRouter>
-    </ApolloProvider>
+    <IntlProvider
+      messages={
+        state.locale === "en-us"
+          ? messages[LOCALES.ENGLISH]
+          : messages[LOCALES.UKRAINIAN]
+      }
+      locale={state.locale}
+      defaultLocale="en"
+    >
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <CssBaseline />
+          <Navigation />
+          <Box
+            sx={{
+              backgroundColor: (theme) => theme.palette.grey[100],
+            }}
+          >
+            <Container maxWidth="xl">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="recommend" element={<Recommend />} />
+                <Route path="login" element={<SignIn />} />
+              </Routes>
+            </Container>
+          </Box>
+        </BrowserRouter>
+      </ApolloProvider>
+    </IntlProvider>
   )
 }
 

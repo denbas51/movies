@@ -13,6 +13,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import CloseIcon from "@mui/icons-material/Close"
 import SocialShare from "../SocialShare"
+import { FormattedMessage } from "react-intl"
 
 const style = {
   position: "absolute",
@@ -83,7 +84,7 @@ const ConfirmModal = ({ open, url, title, onClose }) => {
           </CopyToClipboard>
         </Paper>
         <Typography id="modal-modal-title" variant="h6" component="h3">
-          Share with friends
+          <FormattedMessage id="share" />
         </Typography>
 
         <SocialShare url={url} title={title} />
@@ -103,7 +104,7 @@ const ConfirmModal = ({ open, url, title, onClose }) => {
             }
             sx={{ mb: 2 }}
           >
-            Copied!
+            <FormattedMessage id="coppied" />
           </Alert>
         ) : null}
       </Box>
