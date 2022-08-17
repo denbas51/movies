@@ -8,6 +8,7 @@ import Pagination from "@mui/material/Pagination"
 import { useState } from "react"
 import { useMovies } from "../../hooks/useMovies"
 import { FormattedMessage } from "react-intl"
+import Filters from "../../components/Filters"
 
 const Home = () => {
   const [page, setPage] = useState(1)
@@ -29,7 +30,13 @@ const Home = () => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Paper>
-            <FormattedMessage id="section" />
+            {loading && "Loading..."}
+            {data && (
+              <>
+                <FormattedMessage id="section" />
+                <Filters results={data.movies.results} />
+              </>
+            )}
           </Paper>
         </Grid>
         <Grid item xs={12} md={8}>
