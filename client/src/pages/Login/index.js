@@ -8,17 +8,22 @@ import Checkbox from "@mui/material/Checkbox"
 import Link from "@mui/material/Link"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
+import Snackbar from "@mui/material/Snackbar"
+import MuiAlert from "@mui/material/Alert"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { FormattedMessage, useIntl } from "react-intl"
-import { useLocation, useNavigate } from "react-router-dom"
-import RequireAuth from "../../hoc/RequireAuth"
+import { useNavigate } from "react-router-dom"
 import { Link as RouterLink } from "react-router-dom"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import { useDispatch } from "react-redux"
 import { setUser } from "../../store/slices/userSlice"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+})
 
 function Copyright(props) {
   return (
@@ -42,8 +47,19 @@ const theme = createTheme()
 
 export default function SignIn() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [open, setOpen] = React.useState(false)
 
   const intl = useIntl()
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setOpen(false)
+  }
+
   const handleSubmit = (event) => {
     const auth = getAuth()
 
@@ -53,16 +69,21 @@ export default function SignIn() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user
-        // ...
+        dispatch(
+          setUser({
+            email: user.email,
+            id: user.uid,
+            token: user.accessToken,
+          })
+        )
+        navigate("/")
       })
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
+        setOpen(true)
       })
   }
-  const navigate = useNavigate()
-  const location = useLocation()
-  const fromPage = location.state?.from?.pathname || "/"
 
   return (
     <ThemeProvider theme={theme}>
@@ -140,6 +161,11 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            Wrong email or password!!!
+          </Alert>
+        </Snackbar>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>

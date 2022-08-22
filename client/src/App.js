@@ -62,7 +62,14 @@ function App() {
           >
             <Container maxWidth="xl">
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route
+                  path="/"
+                  element={
+                    <RequireAuth>
+                      <Home />
+                    </RequireAuth>
+                  }
+                />
                 <Route
                   path="settings"
                   element={
@@ -71,7 +78,14 @@ function App() {
                     </RequireAuth>
                   }
                 />
-                <Route path="recommend" element={<Recommend />} />
+                <Route
+                  path="recommend"
+                  element={
+                    <RequireAuth>
+                      <Recommend />
+                    </RequireAuth>
+                  }
+                />
                 <Route path="login" element={<SignIn />} />
                 <Route path="register" element={<RegisterPage />} />
               </Routes>

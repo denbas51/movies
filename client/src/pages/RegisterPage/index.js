@@ -8,6 +8,8 @@ import Checkbox from "@mui/material/Checkbox"
 import Link from "@mui/material/Link"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
+import Snackbar from "@mui/material/Snackbar"
+import MuiAlert from "@mui/material/Alert"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
@@ -16,7 +18,11 @@ import { Link as RouterLink } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { setUser } from "../../store/slices/userSlice"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+})
 
 function Copyright(props) {
   return (
@@ -40,6 +46,16 @@ const theme = createTheme()
 
 function RegisterPage() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [open, setOpen] = React.useState(false)
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setOpen(false)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -60,13 +76,12 @@ function RegisterPage() {
             token: user.accessToken,
           })
         )
-        return <Navigate to={"/"} />
-        // ...
+        navigate("/login")
       })
       .catch((error) => {
         const errorCode = error.code
         const errorMessage = error.message
-        // ..
+        setOpen(true)
       })
   }
   return (
@@ -164,6 +179,11 @@ function RegisterPage() {
             </Grid>
           </Box>
         </Box>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+            This email has been already used!!!
+          </Alert>
+        </Snackbar>
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
