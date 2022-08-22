@@ -3,13 +3,18 @@ import ReactDOM from "react-dom/client"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
 import { AppContextProvider } from "./context/appContext"
+import { Provider } from "react-redux"
+import { store } from "./store"
+import "./firebase"
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
   <React.StrictMode>
-    <AppContextProvider>
-      <App />
-    </AppContextProvider>
+    <Provider store={store}>
+      <AppContextProvider>
+        <App />
+      </AppContextProvider>
+    </Provider>
   </React.StrictMode>
 )
 

@@ -13,6 +13,12 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { FormattedMessage, useIntl } from "react-intl"
+import { useLocation, useNavigate } from "react-router-dom"
+import RequireAuth from "../../hoc/RequireAuth"
+import { Link as RouterLink } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { setUser } from "../../store/slices/userSlice"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
 function Copyright(props) {
   return (
@@ -35,15 +41,28 @@ function Copyright(props) {
 const theme = createTheme()
 
 export default function SignIn() {
+  const dispatch = useDispatch()
+
   const intl = useIntl()
   const handleSubmit = (event) => {
+    const auth = getAuth()
+
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    })
+    signInWithEmailAndPassword(auth, data.get("email"), data.get("password"))
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        const errorMessage = error.message
+      })
   }
+  const navigate = useNavigate()
+  const location = useLocation()
+  const fromPage = location.state?.from?.pathname || "/"
 
   return (
     <ThemeProvider theme={theme}>
@@ -108,8 +127,14 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
-                  <FormattedMessage id="signUp" />
+                <Link
+                  component={RouterLink}
+                  to="/register"
+                  sx={{ flexGrow: 1 }}
+                >
+                  <Link href="#" variant="body2">
+                    <FormattedMessage id="signUp" />
+                  </Link>
                 </Link>
               </Grid>
             </Grid>

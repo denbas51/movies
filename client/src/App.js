@@ -2,7 +2,7 @@ import { useContext } from "react"
 import CssBaseline from "@mui/material/CssBaseline"
 import { Navigation } from "./components"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Home, Settings, Recommend, SignIn } from "./pages"
+import { Home, Settings, Recommend, SignIn, RegisterPage } from "./pages"
 import { Box, Container } from "@mui/material"
 import {
   ApolloClient,
@@ -17,6 +17,7 @@ import { AppContext } from "./context/appContext"
 import { IntlProvider } from "react-intl"
 import { messages } from "./i18n/messages/messages"
 import { LOCALES } from "./const"
+import RequireAuth from "./hoc/RequireAuth"
 
 function App() {
   const { state } = useContext(AppContext)
@@ -62,9 +63,17 @@ function App() {
             <Container maxWidth="xl">
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="settings" element={<Settings />} />
+                <Route
+                  path="settings"
+                  element={
+                    <RequireAuth>
+                      <Settings />
+                    </RequireAuth>
+                  }
+                />
                 <Route path="recommend" element={<Recommend />} />
                 <Route path="login" element={<SignIn />} />
+                <Route path="register" element={<RegisterPage />} />
               </Routes>
             </Container>
           </Box>
