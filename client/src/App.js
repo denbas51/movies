@@ -18,6 +18,7 @@ import { IntlProvider } from "react-intl"
 import { messages } from "./i18n/messages/messages"
 import { LOCALES } from "./const"
 import RequireAuth from "./hoc/RequireAuth"
+import ResetPassword from "./pages/ResetPassword"
 
 function App() {
   const { state } = useContext(AppContext)
@@ -88,6 +89,7 @@ function App() {
                 />
                 <Route path="login" element={<SignIn />} />
                 <Route path="register" element={<RegisterPage />} />
+                <Route path="reset" element={<ResetPassword />} />
               </Routes>
             </Container>
           </Box>

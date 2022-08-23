@@ -18,6 +18,7 @@ export const messages = {
     listName: "Put list name",
     share: "Share with friends",
     coppied: "Copied!",
+    send: "Send",
   },
   [LOCALES.UKRAINIAN]: {
     hello: "Привіт",
@@ -36,5 +37,6 @@ export const messages = {
     listName: "Введіть назву списку",
     share: "Поділитися з друзями",
     coppied: "Скопійовано!",
+    send: "Відправити",
   },
 }

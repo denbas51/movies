@@ -9,17 +9,15 @@ import Link from "@mui/material/Link"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Snackbar from "@mui/material/Snackbar"
-import MuiAlert from "@mui/material/Alert"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { Link as RouterLink } from "react-router-dom"
+import { getAuth, sendPasswordResetEmail } from "firebase/auth"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate } from "react-router-dom"
-import { Link as RouterLink } from "react-router-dom"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
-import { useDispatch } from "react-redux"
-import { setUser } from "../../store/slices/userSlice"
+import MuiAlert from "@mui/material/Alert"
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
@@ -45,8 +43,7 @@ function Copyright(props) {
 
 const theme = createTheme()
 
-export default function SignIn() {
-  const dispatch = useDispatch()
+function ResetPassword() {
   const navigate = useNavigate()
   const [open, setOpen] = React.useState(false)
 
@@ -65,17 +62,10 @@ export default function SignIn() {
 
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    signInWithEmailAndPassword(auth, data.get("email"), data.get("password"))
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user
-        dispatch(
-          setUser({
-            email: user.email,
-            id: user.uid,
-            token: user.accessToken,
-          })
-        )
+
+    sendPasswordResetEmail(auth, data.get("email"))
+      .then(() => {
+        console.log("Password reset email sent")
         navigate("/")
       })
       .catch((error) => {
@@ -101,7 +91,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            <FormattedMessage id="signIn" />
+            <FormattedMessage id="forgotPass" />
           </Typography>
           <Box
             component="form"
@@ -119,34 +109,15 @@ export default function SignIn() {
               autoComplete="email"
               autoFocus
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label={intl.messages.password}
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label={intl.messages.rememberMe}
-            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              <FormattedMessage id="signIn" />
+              <FormattedMessage id="send" />
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="/reset" variant="body2">
-                  <FormattedMessage id="forgotPass" />
-                </Link>
-              </Grid>
               <Grid item>
                 <Link
                   component={RouterLink}
@@ -163,7 +134,7 @@ export default function SignIn() {
         </Box>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-            Wrong email or password!!!
+            Wrong email!!!
           </Alert>
         </Snackbar>
         <Copyright sx={{ mt: 8, mb: 4 }} />
@@ -171,3 +142,5 @@ export default function SignIn() {
     </ThemeProvider>
   )
 }
+
+export default ResetPassword
