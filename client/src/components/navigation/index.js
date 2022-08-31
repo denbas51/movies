@@ -19,6 +19,9 @@ import { Link } from "@mui/material"
 import { AppContext } from "../../context/appContext"
 import { LOCALES } from "../../const"
 import { FormattedMessage, useIntl } from "react-intl"
+import RecommendIcon from "@mui/icons-material/Recommend"
+import EmojiFlagsIcon from "@mui/icons-material/EmojiFlags"
+import EmojiFlagsTwoToneIcon from "@mui/icons-material/EmojiFlagsTwoTone"
 
 const Navigation = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false)
@@ -35,7 +38,7 @@ const Navigation = () => {
   const list = () => (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
-        <Link to="settings">
+        <Link component={RouterLink} to="settings">
           <ListItem button>
             <ListItemButton>
               <ListItemIcon>
@@ -45,6 +48,32 @@ const Navigation = () => {
             </ListItemButton>
           </ListItem>
         </Link>
+        <Link component={RouterLink} to="/">
+          <ListItem button>
+            <ListItemButton>
+              <ListItemIcon>
+                <RecommendIcon />
+              </ListItemIcon>
+              <ListItemText primary={intl.messages.recommend} />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+        <ListItem button onClick={() => setLanguage(LOCALES.ENGLISH)}>
+          <ListItemButton>
+            <ListItemIcon>
+              <EmojiFlagsIcon />
+            </ListItemIcon>
+            <ListItemText primary={"English"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem button onClick={() => setLanguage(LOCALES.UKRAINIAN)}>
+          <ListItemButton>
+            <ListItemIcon>
+              <EmojiFlagsTwoToneIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Українська"} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   )
@@ -74,7 +103,7 @@ const Navigation = () => {
             </Typography>
           </Link>
 
-          <Box>
+          <Box sx={{ display: { xs: "none", sm: "flex" } }}>
             <Button
               sx={{ my: 2, color: "white" }}
               disabled={state.locale === LOCALES.ENGLISH}
@@ -82,6 +111,8 @@ const Navigation = () => {
             >
               En
             </Button>
+          </Box>
+          <Box sx={{ display: { xs: "none", sm: "flex" } }}>
             <Button
               sx={{ my: 2, color: "white" }}
               disabled={state.locale === LOCALES.UKRAINIAN}

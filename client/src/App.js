@@ -1,8 +1,15 @@
 import { useContext } from "react"
 import CssBaseline from "@mui/material/CssBaseline"
 import { Navigation } from "./components"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Home, Settings, Recommend, SignIn, RegisterPage } from "./pages"
+import { Routes, Route } from "react-router-dom"
+import {
+  Home,
+  Settings,
+  Recommend,
+  SignIn,
+  RegisterPage,
+  ResetPassword,
+} from "./pages"
 import { Box, Container } from "@mui/material"
 import {
   ApolloClient,
@@ -18,7 +25,6 @@ import { IntlProvider } from "react-intl"
 import { messages } from "./i18n/messages/messages"
 import { LOCALES } from "./const"
 import RequireAuth from "./hoc/RequireAuth"
-import ResetPassword from "./pages/ResetPassword"
 
 function App() {
   const { state } = useContext(AppContext)
@@ -53,47 +59,45 @@ function App() {
       defaultLocale="en"
     >
       <ApolloProvider client={client}>
-        <BrowserRouter>
-          <CssBaseline />
-          <Navigation />
-          <Box
-            sx={{
-              backgroundColor: (theme) => theme.palette.grey[100],
-            }}
-          >
-            <Container maxWidth="xl">
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <RequireAuth>
-                      <Home />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="settings"
-                  element={
-                    <RequireAuth>
-                      <Settings />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="recommend"
-                  element={
-                    <RequireAuth>
-                      <Recommend />
-                    </RequireAuth>
-                  }
-                />
-                <Route path="login" element={<SignIn />} />
-                <Route path="register" element={<RegisterPage />} />
-                <Route path="reset" element={<ResetPassword />} />
-              </Routes>
-            </Container>
-          </Box>
-        </BrowserRouter>
+        <CssBaseline />
+        <Navigation />
+        <Box
+          sx={{
+            backgroundColor: (theme) => theme.palette.grey[100],
+          }}
+        >
+          <Container maxWidth="xl">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <Home />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="settings"
+                element={
+                  <RequireAuth>
+                    <Settings />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="recommend"
+                element={
+                  <RequireAuth>
+                    <Recommend />
+                  </RequireAuth>
+                }
+              />
+              <Route path="login" element={<SignIn />} />
+              <Route path="register" element={<RegisterPage />} />
+              <Route path="reset" element={<ResetPassword />} />
+            </Routes>
+          </Container>
+        </Box>
       </ApolloProvider>
     </IntlProvider>
   )
