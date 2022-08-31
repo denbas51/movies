@@ -1,12 +1,12 @@
-import { useSelector } from "react-redux"
+import { getFromStorage } from "../../utils/localStorage"
 
 function useAuth() {
-  const { email, token, id } = useSelector((state) => state.user)
+  let user = getFromStorage("user")
   return {
-    isAuth: !!email,
-    email,
-    token,
-    id,
+    isAuth: !!user.email,
+    email: user.email,
+    id: user.id,
+    token: user.token,
   }
 }
 

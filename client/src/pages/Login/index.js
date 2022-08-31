@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom"
 import { Link as RouterLink } from "react-router-dom"
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import { useDispatch } from "react-redux"
-import { setUser } from "../../store/slices/userSlice"
+import { saveToStorage } from "../../utils/localStorage"
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
@@ -69,13 +69,11 @@ export default function SignIn() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user
-        dispatch(
-          setUser({
-            email: user.email,
-            id: user.uid,
-            token: user.accessToken,
-          })
-        )
+        saveToStorage("user", {
+          email: user.email,
+          id: user.uid,
+          token: user.accessToken,
+        })
         navigate("/")
       })
       .catch((error) => {
